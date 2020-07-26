@@ -28,6 +28,6 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.use('/api', cardRouter)
+app.use('/api/v1', cardRouter)
 
 app.listen(apiPort, () => console.log(`Server running on port ${apiPort}`))
