@@ -3,28 +3,40 @@ import { Redirect, useParams } from 'react-router-dom'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 
-import Preloader from '../../components/Preloader/Preloader'
+import { Box, Grid, Typography } from '@material-ui/core'
 
+import Preloader from '../../components/Preloader/Preloader'
+import Card from '../../components/Card/Card'
+import { get, isEmpty } from 'lodash'
 import { getCards } from '../../actions/cards'
 
-import useStyles from './mainPageStyle'
+import useStyles from './homePageStyle'
 
-const MainPage = ({ loadingCards, loadAllCards }) => {
+const MainPage = ({ cards, loadingCards, loadAllCards }) => {
   const classes = useStyles()
 
   useEffect(() => {
     loadAllCards()
   }, [ loadAllCards ])
 
+  const content = components => {
+    if (isEmpty(cards)) {
+      return <p className={classes.notification}>No cards</p>
+    } else {
+      return components.map(card => <Card card={card} key={get(card, 'title')} />)
+    }   
+  }
+
   return loadingCards ? <Preloader fullScreen /> : (
-    <>
-      MainPage
-    </>
+    <Grid container justify='center' className={classes.container}>
+      {content(cards)}
+    </Grid>
   )
 }
 
 MainPage.propTypes = {
   loadAllCards: PropTypes.func.isRequired,
+  cards: PropTypes.array.isRequired
 }
 
 const mapStateToProps = state => ({
