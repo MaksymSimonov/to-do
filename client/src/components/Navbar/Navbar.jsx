@@ -1,15 +1,22 @@
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { AppBar, Badge, Button, Dialog,
+import {
+  Button,
+  Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle, Toolbar, TextField, Tooltip, Slide, Typography } from '@material-ui/core'
+  DialogTitle,
+  TextField,
+  Tooltip,
+  Slide,
+  Typography
+} from '@material-ui/core'
 import classnames from 'classnames'
+
 import Search from '../Search/Search'
 import { createCard } from '../../actions/cards'
-
 import useStyles from './navbarStyles'
 
 const Transition = React.forwardRef(function Transition (props, ref) {
@@ -27,13 +34,16 @@ const Navbar = ({ createCard }) => {
 
   const handleKeyPress = (e) => {
     if (e.key === 'Enter') {
-      let title = e.target.value
-      createCard(title)
+      const title = e.target.value
+      if (title.length !== 0) {
+        createCard(title)
+      }
       handleModal()
       setTitle('')
     }
   }
 
+  // Add task dialog
   const [openDialog, setOpenDialog] = useState(false)
 
   const handleModal = () => {
@@ -42,12 +52,14 @@ const Navbar = ({ createCard }) => {
 
   const handleModalAddCard = () => {
     handleModal()
-    createCard(title)
+    if (title.length !== 0) {
+      createCard(title)
+    }
     setTitle('')
   }
 
-  const cardCreationDialog =  (
-    <Dialog 
+  const cardCreationDialog = (
+    <Dialog
       open={openDialog}
       TransitionComponent={Transition}
       keepMounted
@@ -59,16 +71,16 @@ const Navbar = ({ createCard }) => {
           <DialogContentText>
             Please enter a title for the new card
           </DialogContentText>
-          <TextField 
+          <TextField
             autoFocus
-            margin="dense"
+            margin='dense'
             value={title}
             onChange={handleTextFieldChange}
             onKeyPress={handleKeyPress}
-            id="adding-title" 
-            label="Card title" 
-            type="title" 
-            variant="outlined"  
+            id='adding-title'
+            label='Card title'
+            type='title'
+            variant='outlined'
             fullWidth
           />
         </DialogContent>
@@ -80,17 +92,18 @@ const Navbar = ({ createCard }) => {
             className={classnames(classes.button, classes.buttonCreate)}
             variant='contained'
             color='secondary'
-            onClick={handleModalAddCard}>
+            onClick={handleModalAddCard}
+          >
               Create
           </Button>
         </DialogActions>
       </div>
     </Dialog>
-    )
-  
+  )
+
   return (
-    <div className={classes.container} >
-      <Typography variant='h6'>
+    <div className={classes.container}>
+      <Typography variant='h6' className={classes.title}>
         To-Do list
       </Typography>
       <Search />
@@ -98,7 +111,8 @@ const Navbar = ({ createCard }) => {
         <Button
           className={classes.button}
           onClick={handleModal}
-          color='inherit'>
+          color='inherit'
+        >
             Add card
         </Button>
       </Tooltip>
@@ -111,11 +125,8 @@ Navbar.propTypes = {
   createCard: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-})
-
 const mapDispatchToProps = dispatch => ({
-  createCard: (title) => dispatch(createCard(title)),
+  createCard: (title) => dispatch(createCard(title))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Navbar)
+export default connect(null, mapDispatchToProps)(Navbar)

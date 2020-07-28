@@ -1,7 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles'
 import styleConstants from '../../utils/constants/styleConstants'
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles(() => ({
   container: {
     display: 'flex',
     alignItems: 'center',
@@ -23,6 +23,7 @@ const useStyles = makeStyles( theme => ({
     color: styleConstants.BTN_PRIMARY_TEXT_COLOR,
     textShadow: '0 -1px 2px rgba(0,0,0,.2)',
     padding: 3,
+    marginLeft: 10,
     height: 'min-content',
     outline: 'none',
     background: styleConstants.BTN_BG_COLOR,
@@ -38,19 +39,18 @@ const useStyles = makeStyles( theme => ({
     }
   },
   buttonDel: {
-    color: styleConstants.BTN_DEL_TEXT_COLOR,
+    color: styleConstants.BTN_DEL_TEXT_COLOR
   },
   dialogContainer: {
     maxWidth: 400,
     color: styleConstants.CARD_TEXT_COLOR,
-    background: styleConstants.CARD_BG_COLOR,
+    background: styleConstants.CARD_BG_COLOR
   },
   dialogHeader: {
     color: styleConstants.CARD_HEADER_TEXT_COLOR,
     background: styleConstants.CARD_HEADER_BG_COLOR,
     padding: '8px 15px'
   }
-  
 }))
 
 export default useStyles

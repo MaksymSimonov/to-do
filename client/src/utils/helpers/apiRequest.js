@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { Toastr } from '../toastr/Toastr'
 
 const METHOD_GET = 'get'
 const METHOD_POST = 'post'
@@ -13,21 +12,20 @@ const handleRequestError = error => {
     const toastrMessage = error.response.data.message
       ? error.response.data.message
       : error.response.data || 'Error occurred during request to server'
-    Toastr.error(toastrMessage)
+    console.log(toastrMessage)
     return error.response
   } else if (error.request) {
-    Toastr.error('Application is not responding, check your network connection')
+    console.log('Application is not responding, check your network connection')
     return error.request
   } else if (error.message) {
-    Toastr.error(error.message)
+    console.log(error.message)
     return error.message
   } else {
-    Toastr.error('Error occurred during request to server')
+    console.log('Error occurred during request to server')
   }
 }
 
 class ApiRequest {
-
   get (url, config) {
     return this.makeRequest(url, METHOD_GET, null, config)
   }
@@ -66,7 +64,6 @@ class ApiRequest {
       .then(res => res.data,
         err => Promise.reject(handleRequestError(err)))
   }
-
 }
 
 export default new ApiRequest()

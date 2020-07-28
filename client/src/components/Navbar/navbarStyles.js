@@ -1,4 +1,4 @@
-import { fade, makeStyles } from '@material-ui/core/styles'
+import { makeStyles } from '@material-ui/core/styles'
 import styleConstants from '../../utils/constants/styleConstants'
 
 const useStyles = makeStyles(theme => ({
@@ -9,8 +9,16 @@ const useStyles = makeStyles(theme => ({
     padding: '0 50px',
     minHeight: 63,
     minWidth: 20,
+    [theme.breakpoints.down('xs')]: {
+      padding: '0 20px'
+    },
     background: styleConstants.NAVBAR_BG_COLOR,
-    color: styleConstants.CARD_HEADER_TEXT_COLOR,
+    color: styleConstants.CARD_HEADER_TEXT_COLOR
+  },
+  title: {
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    }
   },
   button: {
     position: 'relative',
@@ -33,12 +41,12 @@ const useStyles = makeStyles(theme => ({
     }
   },
   buttonCreate: {
-    color: '#ADFF2F',
+    color: '#ADFF2F'
   },
   dialogContainer: {
     maxWidth: 400,
     color: styleConstants.CARD_TEXT_COLOR,
-    background: styleConstants.CARD_BG_COLOR,
+    background: styleConstants.CARD_BG_COLOR
   },
   dialogHeader: {
     color: styleConstants.CARD_HEADER_TEXT_COLOR,

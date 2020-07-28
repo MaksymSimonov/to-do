@@ -5,13 +5,11 @@ import store from './store'
 
 import HomePage from './pages/HomePage/HomePage'
 import Navbar from './components/Navbar/Navbar'
-import Toastr from './components/Toastr/Toastr'
 import Background from './components/Background/Background'
 
-function App() {
+function App () {
   return (
     <Provider store={store}>
-      {/* <Toastr /> */}
       <Router>
         <Navbar />
         <Background>

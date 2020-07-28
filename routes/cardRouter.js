@@ -10,5 +10,6 @@ router.post('/card/:cardId/task', CardController.addTask)
 router.put('/card/:cardId/task/:taskId', CardController.updateDoneForTask)
 router.delete('/card/:cardId/task/:taskId', CardController.deleteTask)
 router.get('/cards', CardController.getCards)
+router.put('/cards/search', CardController.searchCards)
 
 module.exports = router

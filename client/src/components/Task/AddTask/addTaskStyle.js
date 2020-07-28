@@ -1,9 +1,9 @@
 import { makeStyles } from '@material-ui/core/styles'
 import styleConstants from '../../../utils/constants/styleConstants'
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles(theme => ({
   container: {
-    display: 'flex', 
+    display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-between',
     padding: '0 10px 3px 10px',
@@ -32,8 +32,8 @@ const useStyles = makeStyles( theme => ({
   },
   textField: {
     marginRight: 10,
-    background: `rgb(245, 245, 245)`
-  },
+    background: 'rgb(245, 245, 245)'
+  }
 }))
 
 export default useStyles

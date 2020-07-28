@@ -1,11 +1,5 @@
-import React, { Fragment, useState } from 'react'
+import React, { useState } from 'react'
 import { connect } from 'react-redux'
-
-import Task from '../Task/Task'
-import { get, isEmpty } from 'lodash'
-import { getDate } from '../../utils/date/getDate'
-import PropTypes from 'prop-types'
-import classnames from 'classnames'
 import {
   Button,
   Dialog,
@@ -19,9 +13,15 @@ import {
   Tooltip
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
+import { get, isEmpty } from 'lodash'
+import PropTypes from 'prop-types'
+import classnames from 'classnames'
+
+import Task from '../Task/Task'
+import { getDate } from '../../utils/date/getDate'
 import AddTask from '../../components/Task/AddTask/AddTask'
-import useStyles from './cardStyles'
 import { deleteCard } from '../../actions/cards'
+import useStyles from './cardStyles'
 
 const Transition = React.forwardRef(function Transition (props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
@@ -46,8 +46,8 @@ const Card = ({ card, deleteCard }) => {
     deleteCard(cardId)
   }
 
-  const deleteCardDialog =  (
-    <Dialog 
+  const deleteCardDialog = (
+    <Dialog
       open={openDialog}
       TransitionComponent={Transition}
       keepMounted
@@ -68,7 +68,8 @@ const Card = ({ card, deleteCard }) => {
             className={classnames(classes.button, classes.buttonDel)}
             variant='contained'
             color='secondary'
-            onClick={handleModalDelete}>
+            onClick={handleModalDelete}
+          >
               Delete
           </Button>
         </DialogActions>
@@ -81,24 +82,24 @@ const Card = ({ card, deleteCard }) => {
       return <p className={classes.notification}>No tasks</p>
     } else {
       return components.map(task => <Task task={task} cardId={cardId} key={get(task, 'task')} />)
-    }   
+    }
   }
-  
+
   return (
     <div className={classes.container}>
-      <Typography className={classes.header} variant='subtitle' component='div'>
+      <Typography className={classes.header} variant='subtitle'>
         {title}
         <Tooltip title='Delete this card'>
           <IconButton className={classes.button} onClick={handleModal} color='inherit'>
-            <DeleteIcon/>
+            <DeleteIcon />
           </IconButton>
         </Tooltip>
       </Typography>
-      <div className={classes.tasksContainer}> 
+      <div className={classes.tasksContainer}>
         {content(tasks)}
       </div>
       <AddTask cardId={cardId} />
-      <p className={classes.cardDate}>Date: {getDate(date)}</p> 
+      <p className={classes.cardDate}>Date: {getDate(date)}</p>
       {deleteCardDialog}
     </div>
   )
@@ -109,12 +110,8 @@ Card.propTypes = {
   deleteCard: PropTypes.func.isRequired
 }
 
-const mapStateToProps = state => ({
-
-})
-
 const mapDispatchToProps = dispatch => ({
-  deleteCard: (cardId) => dispatch(deleteCard(cardId)),
+  deleteCard: (cardId) => dispatch(deleteCard(cardId))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Card)
+export default connect(null, mapDispatchToProps)(Card)

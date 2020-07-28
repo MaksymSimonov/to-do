@@ -8,7 +8,8 @@ const Background = ({ children }) => {
       backgroundColor: styleConstants.BACKGROUND_COLOR,
       minHeight: 'calc(100vh - 63px)',
       position: 'relative'
-    }}>
+    }}
+    >
       {children}
     </div>
   )

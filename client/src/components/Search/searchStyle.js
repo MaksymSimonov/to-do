@@ -1,28 +1,6 @@
 import { fade, makeStyles } from '@material-ui/core/styles'
-import styleConstants from '../../utils/constants/styleConstants'
 
 const useStyles = makeStyles(theme => ({
-  searchContainer: {
-    width: 300,
-    [theme.breakpoints.down('xs')]: {
-      display: 'none'
-    }
-  },
-  optionWrapper: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center'
-  },
-
-  searchInput: {
-    '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]': {
-      height: 38,
-      '& .MuiAutocomplete-input': {
-        color: 'white',
-        padding: '5px 0 5px 40px'
-      }
-    }
-  },
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
@@ -30,15 +8,17 @@ const useStyles = makeStyles(theme => ({
     '&:hover': {
       backgroundColor: fade(theme.palette.common.white, 0.25)
     },
-    marginRight: theme.spacing(7),
     marginLeft: 0,
+    marginRight: 30,
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
-      width: 'auto',
+      width: 'auto'
+    },
+    [theme.breakpoints.down('xs')]: {
+      width: 135
     }
   },
-
   searchIcon: {
     width: theme.spacing(7),
     height: '100%',
@@ -48,16 +28,17 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyContent: 'center'
   },
-  cssOutlinedInput: {
-    '&$cssFocused $notchedOutline': {
-      borderColor: `${styleConstants.ICON_COLOR} !important`
-    }
+  inputRoot: {
+    color: 'inherit'
   },
-  cssFocused: {},
-
-  notchedOutline: {
-    borderWidth: '1px',
-    borderColor: `${styleConstants.PRIMARY_COLOR} !important`
+  inputInput: {
+    padding: theme.spacing(1, 1, 1, 0),
+    paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
+    transition: theme.transitions.create('width'),
+    width: '100%',
+    [theme.breakpoints.up('md')]: {
+      width: '20ch'
+    }
   }
 }))
 

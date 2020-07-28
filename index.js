@@ -11,11 +11,11 @@ const cardRouter = require('./routes/cardRouter')
 const app = express()
 const apiPort = 8000
 
-let logDirectory = path.join(__dirname, 'log');
-let accessLogStream = rfs('access.log', {
+const logDirectory = path.join(__dirname, 'log')
+const accessLogStream = rfs('access.log', {
   interval: '1d',
   path: logDirectory
-});
+})
 
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(cors())

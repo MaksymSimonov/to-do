@@ -6,7 +6,7 @@ createCard = (req, res) => {
   if (!body.title) {
     return res.status(400).json({
       success: false,
-      error: 'You must provide a card title',
+      error: 'You must provide a card title'
     })
   }
 
@@ -19,18 +19,18 @@ createCard = (req, res) => {
 
   card
     .save()
-      .then(() => {
-        return res.status(201).json({
-          success: true,
-          data: card,
-        })
+    .then(() => {
+      return res.status(201).json({
+        success: true,
+        data: card
       })
-      .catch(error => {
-        return res.status(400).json({
-          error,
-          message: 'Card not saved!',
-        })
+    })
+    .catch(error => {
+      return res.status(400).json({
+        error,
+        message: 'Card not saved!'
       })
+    })
 }
 
 updateCard = async (req, res) => {
@@ -39,7 +39,7 @@ updateCard = async (req, res) => {
   if (!body) {
     return res.status(400).json({
       success: false,
-      error: 'You must provide a body to update',
+      error: 'You must provide a body to update'
     })
   }
 
@@ -47,7 +47,7 @@ updateCard = async (req, res) => {
     if (err) {
       return res.status(404).json({
         err,
-        message: 'Card not found!',
+        message: 'Card not found!'
       })
     }
 
@@ -56,19 +56,19 @@ updateCard = async (req, res) => {
     card.date = body.date
     card
       .save()
-        .then(() => {
-          return res.status(200).json({
-            success: true,
-            id: card._id,
-            message: 'Card updated!',
-          })
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          id: card._id,
+          message: 'Card updated!'
         })
-        .catch(error => {
-          return res.status(404).json({
-            error,
-            message: 'Card not updated!',
-          })
+      })
+      .catch(error => {
+        return res.status(404).json({
+          error,
+          message: 'Card not updated!'
         })
+      })
   })
 }
 
@@ -86,13 +86,13 @@ deleteCard = async (req, res) => {
   }).catch(err => console.log(err))
 }
 
-addTask = async (req, res) => { 
+addTask = async (req, res) => {
   const body = req.body
 
   if (!body) {
     return res.status(400).json({
       success: false,
-      error: 'You must provide a body to add task',
+      error: 'You must provide a body to add task'
     })
   }
 
@@ -100,14 +100,14 @@ addTask = async (req, res) => {
     if (err) {
       return res.status(404).json({
         err,
-        message: 'Card not found!',
+        message: 'Card not found!'
       })
     }
 
-    const task = { 
-      'task': body.task, 
-      'done': false, 
-      'date': new Date().getTime() 
+    const task = {
+      task: body.task,
+      done: false,
+      date: new Date().getTime()
     }
 
     const cardTasks = card.tasks
@@ -116,27 +116,27 @@ addTask = async (req, res) => {
 
     card
       .save()
-        .then(() => {
-          return res.status(200).json({
-            success: true,
-            data: card
-          })
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          data: card
         })
-        .catch(error => {
-          return res.status(404).json({
-            error,
-            message: 'Card not updated!',
-          })
+      })
+      .catch(error => {
+        return res.status(404).json({
+          error,
+          message: 'Card not updated!'
         })
+      })
   })
 }
 
-deleteTask = async (req, res) => { 
+deleteTask = async (req, res) => {
   Card.findOne({ _id: req.params.cardId }, (err, card) => {
     if (err) {
       return res.status(404).json({
         err,
-        message: 'Card not found!',
+        message: 'Card not found!'
       })
     }
 
@@ -144,27 +144,27 @@ deleteTask = async (req, res) => {
 
     card
       .save()
-        .then(() => {
-          return res.status(200).json({
-            success: true,
-            data: card
-          })
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          data: card
         })
-        .catch(error => {
-          return res.status(404).json({
-            error,
-            message: 'Card not updated!',
-          })
+      })
+      .catch(error => {
+        return res.status(404).json({
+          error,
+          message: 'Card not updated!'
         })
+      })
   })
 }
 
-updateDoneForTask = async (req, res) => { 
+updateDoneForTask = async (req, res) => {
   Card.findOne({ _id: req.params.cardId }, (err, card) => {
     if (err) {
       return res.status(404).json({
         err,
-        message: 'Card not found!',
+        message: 'Card not found!'
       })
     }
 
@@ -178,18 +178,18 @@ updateDoneForTask = async (req, res) => {
 
     card
       .save()
-        .then(() => {
-          return res.status(200).json({
-            success: true,
-            data: card
-          })
+      .then(() => {
+        return res.status(200).json({
+          success: true,
+          data: card
         })
-        .catch(error => {
-          return res.status(404).json({
-            error,
-            message: 'Card not updated!',
-          })
+      })
+      .catch(error => {
+        return res.status(404).json({
+          error,
+          message: 'Card not updated!'
         })
+      })
   })
 }
 
@@ -217,6 +217,34 @@ getCards = async (req, res) => {
   }).catch(err => console.log(err))
 }
 
+searchCards = async (req, res) => {
+  const searchData = req.body.searchData
+
+  await Card.find({}, (err, cards) => {
+    if (err) {
+      return res.status(400).json({ success: false, error: err })
+    }
+
+    if (searchData.length == 0){
+      return res.status(200).json({ success: true, data: cards })
+    }
+
+    let result = []
+    cards.forEach( card => {
+      if (card.title.toLowerCase().indexOf(searchData.toLowerCase()) != -1) {
+        result.push(card)
+      } else {
+        let tasks = [...card.tasks]
+        tasks.forEach(task => {
+          if (task.task.toLowerCase().indexOf(searchData.toLowerCase()) != -1) result.push(card)
+        })
+      }
+    })
+
+    return res.status(200).json({ success: true, data: result })
+  }).catch(err => console.log(err))
+}
+
 module.exports = {
   createCard,
   updateCard,
@@ -225,5 +253,6 @@ module.exports = {
   getCards,
   deleteTask,
   updateDoneForTask,
-  addTask
+  addTask,
+  searchCards
 }

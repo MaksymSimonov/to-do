@@ -1,15 +1,16 @@
 import { makeStyles } from '@material-ui/core/styles'
 import styleConstants from '../../utils/constants/styleConstants'
 
-const useStyles = makeStyles( theme => ({
+const useStyles = makeStyles(() => ({
   container: {
     color: styleConstants.CARD_TEXT_COLOR,
     background: styleConstants.CARD_BG_COLOR,
     borderRadius: 4,
     boxShadow: '0 1px rgba(255,255,255,.2) inset,  0 3px 5px rgba(0,1,6,.5),  0 0 1px 1px rgba(0,1,6,.2)',
     width: 300,
-    wordWrap: 'break-word',
+    wordBreak: 'break-word',
     height: '100%',
+    boxSizing: 'border-box',
     margin: 20
   },
   header: {
@@ -19,9 +20,10 @@ const useStyles = makeStyles( theme => ({
     color: styleConstants.CARD_HEADER_TEXT_COLOR,
     background: styleConstants.CARD_HEADER_BG_COLOR,
     padding: '8px 10px 8px 15px',
+    wordBreak: 'break-word',
     fontWeight: 700,
     borderBottom: '1px solid #dddfe2',
-    borderRadius: '4px 4px 0 0',
+    borderRadius: '4px 4px 0 0'
   },
   tasksContainer: {
     borderRadius: 4
@@ -29,6 +31,8 @@ const useStyles = makeStyles( theme => ({
   notification: {
     margin: 0,
     padding: 10,
+    textAlign: 'center',
+    fontWeight: 900,
     borderBottom: '1px solid rgb(188,188,189)'
   },
   cardDate: {
@@ -42,6 +46,7 @@ const useStyles = makeStyles( theme => ({
     color: styleConstants.BTN_PRIMARY_TEXT_COLOR,
     textShadow: '0 -1px 2px rgba(0,0,0,.2)',
     padding: 3,
+    marginLeft: 10,
     height: 'min-content',
     outline: 'none',
     background: styleConstants.BTN_BG_COLOR,
@@ -57,12 +62,12 @@ const useStyles = makeStyles( theme => ({
     }
   },
   buttonDel: {
-    color: styleConstants.BTN_DEL_TEXT_COLOR,
+    color: styleConstants.BTN_DEL_TEXT_COLOR
   },
   dialogContainer: {
     maxWidth: 400,
     color: styleConstants.CARD_TEXT_COLOR,
-    background: styleConstants.CARD_BG_COLOR,
+    background: styleConstants.CARD_BG_COLOR
   },
   dialogHeader: {
     color: styleConstants.CARD_HEADER_TEXT_COLOR,

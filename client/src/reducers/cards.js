@@ -1,7 +1,6 @@
 import {
   CARDS_START_LOADING,
   CARDS_END_LOADING,
-  CARD_ADDED,
   CARD_UPDATED,
   CARD_DELETED,
   CARDS_RECEIVED,
@@ -9,38 +8,35 @@ import {
   TASK_DELETED,
   TASK_ADDED
 } from '../utils/constants/actionsName'
-  
+
 const initialState = {
   cards: [],
   loading: false
 }
-  
+
 export default function (state = initialState, action) {
   const { type, payload } = action
-  
+
   switch (type) {
     case CARDS_START_LOADING:
       return { ...state, loading: true }
-  
-    case CARDS_END_LOADING:
-      return { ...state, loading: false }
 
-    case CARD_ADDED:
+    case CARDS_END_LOADING:
       return { ...state, loading: false }
 
     case CARDS_RECEIVED:
       return { ...state, cards: payload.data, loading: false }
-    
+
     case CARD_UPDATED:
       return { ...state, loading: false }
 
     case CARD_DELETED: {
-      let result = [...state.cards].filter(card => card._id !== payload.cardId)
+      const result = [...state.cards].filter(card => card._id !== payload.cardId)
       return { ...state, cards: result, loading: false }
     }
 
     case TASK_DELETED: {
-      let result = [...state.cards].map(card => {
+      const result = [...state.cards].map(card => {
         if (card._id === payload.cardId) return payload.card
         return card
       })
@@ -48,7 +44,7 @@ export default function (state = initialState, action) {
     }
 
     case TASK_ADDED: {
-      let result = [...state.cards].map(card => {
+      const result = [...state.cards].map(card => {
         if (card._id === payload.cardId) return payload.card
         return card
       })
@@ -56,7 +52,7 @@ export default function (state = initialState, action) {
     }
 
     case DONE_FOR_TASK_UPDATED: {
-      let result = [...state.cards].map(card => {
+      const result = [...state.cards].map(card => {
         if (card._id === payload.cardId) return payload.card
         return card
       })
@@ -64,7 +60,6 @@ export default function (state = initialState, action) {
     }
 
     default:
-      return {...state}
+      return { ...state }
   }
 }
-  
