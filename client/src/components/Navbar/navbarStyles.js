@@ -2,54 +2,22 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 import styleConstants from '../../utils/constants/styleConstants'
 
 const useStyles = makeStyles(theme => ({
-  root: {
-    flexGrow: 1
-  },
   container: {
-    background: styleConstants.NAVBAR_BG_COLOR
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    padding: '0 50px',
+    minHeight: 63,
+    minWidth: 20,
+    background: styleConstants.NAVBAR_BG_COLOR,
+    color: styleConstants.CARD_HEADER_TEXT_COLOR,
   },
-  toolbar: {
-    minHeight: 63
-  },
-  title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block'
-    }
-  },
-  searchContainer: {
-    width: '300px',
-    marginLeft: '20px'
-  },
-  search: {
-    position: 'relative',
-    borderRadius: theme.shape.borderRadius,
-    backgroundColor: fade(theme.palette.common.white, 0.15),
-    '&:hover': {
-      backgroundColor: fade(theme.palette.common.white, 0.25)
-    },
-    marginRight: theme.spacing(2),
-    marginLeft: 0,
-    width: '100%',
-    [theme.breakpoints.up('sm')]: {
-      marginLeft: theme.spacing(3),
-      width: 'auto'
-    }
-  },
-  sectionDesktop: {
-    display: 'none',
-    [theme.breakpoints.up('md')]: {
-      display: 'flex'
-    }
-  },
-
-  navbarButton: {
-    margin: theme.spacing(1),
+  button: {
     position: 'relative',
     display: 'inline-block',
     color: styleConstants.BTN_PRIMARY_TEXT_COLOR,
     textShadow: '0 -1px 2px rgba(0,0,0,.2)',
-    padding: 7,
+    padding: 6,
     height: 'min-content',
     outline: 'none',
     background: styleConstants.BTN_BG_COLOR,
@@ -63,6 +31,19 @@ const useStyles = makeStyles(theme => ({
       background: styleConstants.BTN_BG_ACTIVE,
       boxShadow: styleConstants.BTN_SHADOW_ACTIVE
     }
+  },
+  buttonCreate: {
+    color: '#ADFF2F',
+  },
+  dialogContainer: {
+    maxWidth: 400,
+    color: styleConstants.CARD_TEXT_COLOR,
+    background: styleConstants.CARD_BG_COLOR,
+  },
+  dialogHeader: {
+    color: styleConstants.CARD_HEADER_TEXT_COLOR,
+    background: styleConstants.CARD_HEADER_BG_COLOR,
+    padding: '8px 15px'
   }
 
 }))

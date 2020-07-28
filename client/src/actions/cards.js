@@ -4,17 +4,18 @@ import {
   CARDS_RECEIVED,
   CARD_ADDED,
   CARD_UPDATED,
-  CARD_DELETED
+  CARD_DELETED,
+  DONE_FOR_TASK_UPDATED,
+  TASK_DELETED,
+  TASK_ADDED
 } from '../utils/constants/actionsName'
 import { Toastr } from '../utils/toastr/Toastr'
 
 import apiRequest from '../utils/helpers/apiRequest'
   
-export const createCard = (title, tasks, date) => {
+export const createCard = (title) => {
   const body = {
-    title,
-    tasks: tasks,
-    date
+    title
   }
   
   return apiRequest.post('/card', body)
@@ -42,11 +43,13 @@ export const updateCard = (cardId, title, tasks, date) => async dispatch => {
 
 export const deleteCard = (cardId) => async dispatch => {
   try {
-    const card = await apiRequest.delete('/card/' + cardId)
-    dispatch({
-      type: CARD_DELETED,
-      payload: { cardId, card }
-    })
+    const result = await apiRequest.delete('/card/' + cardId)
+    if (result.success === true){
+      dispatch({
+        type: CARD_DELETED,
+        payload: { cardId }
+      })
+    }
   } catch (e) {
     Toastr.error('Something goes wrong! Please try again later')
   }
@@ -68,5 +71,56 @@ export const getCards = () => async dispatch => {
     dispatch({
       type: CARDS_END_LOADING
     })
+  }
+}
+
+export const deleteTask = (cardId, taskId) => async dispatch => {
+  try {
+    const result = await apiRequest.delete('/card/' + cardId + '/task/' + taskId)
+    if (result.success === true){
+      const card = result.data
+      dispatch({
+        type: TASK_DELETED,
+        payload: { cardId, card }
+      })
+    }
+  } catch (e) {
+    Toastr.error('Something goes wrong! Please try again later')
+  }
+}
+
+export const addTask = (cardId, task) => async dispatch => {
+  const body = {
+    task
+  }
+
+  try {
+    const result = await apiRequest.post('/card/' + cardId + '/task', body)
+    console.log(result)
+    if (result.success === true){
+      const card = result.data
+      dispatch({
+        type: TASK_ADDED,
+        payload: { cardId, card }
+      })
+    }
+  } catch (e) {
+    Toastr.error('Something goes wrong! Please try again later')
+  }
+}
+
+
+export const updateDoneForTask = (cardId, taskId) => async dispatch => {
+  try {
+    const result = await apiRequest.put('/card/' + cardId + '/task/' + taskId)
+    if (result.success === true){
+      const card = result.data
+      dispatch({
+        type: DONE_FOR_TASK_UPDATED,
+        payload: { cardId, card }
+      })
+    }
+  } catch (e) {
+    Toastr.error('Something goes wrong! Please try again later')
   }
 }

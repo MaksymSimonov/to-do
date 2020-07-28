@@ -4,7 +4,10 @@ import {
   CARD_ADDED,
   CARD_UPDATED,
   CARD_DELETED,
-  CARDS_RECEIVED
+  CARDS_RECEIVED,
+  DONE_FOR_TASK_UPDATED,
+  TASK_DELETED,
+  TASK_ADDED
 } from '../utils/constants/actionsName'
   
 const initialState = {
@@ -31,10 +34,35 @@ export default function (state = initialState, action) {
     case CARD_UPDATED:
       return { ...state, loading: false }
 
-    case CARD_DELETED:
-      return { ...state, loading: false }
-    
-  
+    case CARD_DELETED: {
+      let result = [...state.cards].filter(card => card._id !== payload.cardId)
+      return { ...state, cards: result, loading: false }
+    }
+
+    case TASK_DELETED: {
+      let result = [...state.cards].map(card => {
+        if (card._id === payload.cardId) return payload.card
+        return card
+      })
+      return { ...state, cards: result, loading: false }
+    }
+
+    case TASK_ADDED: {
+      let result = [...state.cards].map(card => {
+        if (card._id === payload.cardId) return payload.card
+        return card
+      })
+      return { ...state, cards: result, loading: false }
+    }
+
+    case DONE_FOR_TASK_UPDATED: {
+      let result = [...state.cards].map(card => {
+        if (card._id === payload.cardId) return payload.card
+        return card
+      })
+      return { ...state, cards: result, loading: false }
+    }
+
     default:
       return {...state}
   }

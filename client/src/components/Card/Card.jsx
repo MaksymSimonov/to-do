@@ -19,15 +19,17 @@ import {
   Tooltip
 } from '@material-ui/core'
 import DeleteIcon from '@material-ui/icons/Delete'
-
+import AddTask from '../../components/Task/AddTask/AddTask'
 import useStyles from './cardStyles'
+import { deleteCard } from '../../actions/cards'
 
 const Transition = React.forwardRef(function Transition (props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
-const Card = ({ card }) => {
+const Card = ({ card, deleteCard }) => {
   const classes = useStyles()
+  const cardId = card._id
   const title = card.title
   const tasks = card.tasks
   const date = card.date
@@ -41,45 +43,44 @@ const Card = ({ card }) => {
 
   const handleModalDelete = () => {
     handleModal()
-    // deleteCard(cardId)
+    deleteCard(cardId)
   }
 
   const deleteCardDialog =  (
-  <Dialog 
-    open={openDialog}
-    TransitionComponent={Transition}
-    keepMounted
-    onClose={handleModal}
-  >
-    <div className={classes.dialogContainer}>
-      <DialogTitle className={classes.dialogHeader} id='alert'>Deleting card</DialogTitle>
-      <DialogContent>
-        <DialogContentText>
-          Are you sure you want to permanently remove this card?
-        </DialogContentText>
-      </DialogContent>
-      <DialogActions>
-        <Button className={classes.button} variant='contained' color='primary' onClick={handleModal}>
-          Cancel
-        </Button>
-        <Button
-          className={classnames(classes.button, classes.buttonDel)}
-          variant='contained'
-          color='secondary'
-          onClick={handleModalDelete}>
-            Delete
-        </Button>
-      </DialogActions>
-    </div>
-  </Dialog>
+    <Dialog 
+      open={openDialog}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleModal}
+    >
+      <div className={classes.dialogContainer}>
+        <DialogTitle className={classes.dialogHeader} id='alert'>Deleting card</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Are you sure you want to permanently remove this card?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button className={classes.button} variant='contained' color='primary' onClick={handleModal}>
+            Cancel
+          </Button>
+          <Button
+            className={classnames(classes.button, classes.buttonDel)}
+            variant='contained'
+            color='secondary'
+            onClick={handleModalDelete}>
+              Delete
+          </Button>
+        </DialogActions>
+      </div>
+    </Dialog>
   )
-  
 
   const content = components => {
     if (isEmpty(tasks)) {
       return <p className={classes.notification}>No tasks</p>
     } else {
-      return components.map(task => <Task task={task} key={get(task, 'task')} />)
+      return components.map(task => <Task task={task} cardId={cardId} key={get(task, 'task')} />)
     }   
   }
   
@@ -95,15 +96,17 @@ const Card = ({ card }) => {
       </Typography>
       <div className={classes.tasksContainer}> 
         {content(tasks)}
-        <p className={classes.cardDate}>Date of creation: {getDate(date)}</p> 
       </div>
+      <AddTask cardId={cardId} />
+      <p className={classes.cardDate}>Date: {getDate(date)}</p> 
       {deleteCardDialog}
     </div>
   )
 }
 
 Card.propTypes = {
-  card: PropTypes.object,
+  card: PropTypes.object.isRequired,
+  deleteCard: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
@@ -111,7 +114,7 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-
+  deleteCard: (cardId) => dispatch(deleteCard(cardId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Card)

@@ -1,11 +1,14 @@
 import React, { Fragment, useState } from 'react'
 import { connect } from 'react-redux'
+import PropTypes from 'prop-types'
 import { AppBar, Badge, Button, Dialog,
   DialogActions,
   DialogContent,
   DialogContentText,
   DialogTitle, Toolbar, TextField, Tooltip, Slide, Typography } from '@material-ui/core'
+import classnames from 'classnames'
 import Search from '../Search/Search'
+import { createCard } from '../../actions/cards'
 
 import useStyles from './navbarStyles'
 
@@ -13,89 +16,106 @@ const Transition = React.forwardRef(function Transition (props, ref) {
   return <Slide direction='up' ref={ref} {...props} />
 })
 
-const Navbar = ({ }) => {
+const Navbar = ({ createCard }) => {
   const classes = useStyles()
 
-  const [open, setOpen] = React.useState(false);
+  const [title, setTitle] = useState('')
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const addCard = () => {
-    handleClose()
-    console.log()
+  const handleTextFieldChange = (e) => {
+    setTitle(e.target.value)
   }
 
-  const cardCreationDialog = (
-    <Dialog open={open} onClose={handleClose} TransitionComponent={Transition} aria-labelledby="form-dialog-title">
-        <DialogTitle id="form-dialog-title">Card creation</DialogTitle>
+  const handleKeyPress = (e) => {
+    if (e.key === 'Enter') {
+      let title = e.target.value
+      createCard(title)
+      handleModal()
+      setTitle('')
+    }
+  }
+
+  const [openDialog, setOpenDialog] = useState(false)
+
+  const handleModal = () => {
+    setOpenDialog(!openDialog)
+  }
+
+  const handleModalAddCard = () => {
+    handleModal()
+    createCard(title)
+    setTitle('')
+  }
+
+  const cardCreationDialog =  (
+    <Dialog 
+      open={openDialog}
+      TransitionComponent={Transition}
+      keepMounted
+      onClose={handleModal}
+    >
+      <div className={classes.dialogContainer}>
+        <DialogTitle className={classes.dialogHeader} id='alert'>Card creation</DialogTitle>
         <DialogContent>
           <DialogContentText>
             Please enter a title for the new card
           </DialogContentText>
-          <TextField
+          <TextField 
             autoFocus
             margin="dense"
-            id="name"
-            label="Card title"
-            type="title"
+            value={title}
+            onChange={handleTextFieldChange}
+            onKeyPress={handleKeyPress}
+            id="adding-title" 
+            label="Card title" 
+            type="title" 
+            variant="outlined"  
             fullWidth
           />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
+          <Button className={classes.button} variant='contained' color='primary' onClick={handleModal}>
             Cancel
           </Button>
-          <Button onClick={addCard} color="primary">
-            Create
+          <Button
+            className={classnames(classes.button, classes.buttonCreate)}
+            variant='contained'
+            color='secondary'
+            onClick={handleModalAddCard}>
+              Create
           </Button>
         </DialogActions>
-      </Dialog>
-  )
+      </div>
+    </Dialog>
+    )
   
   return (
-    <div className={classes.root} >
-    <AppBar position='static' className={classes.container} >
-      <Toolbar className={classes.toolbar}>
-        <Typography variant='h6' className={classes.title}>
-          To-Do list
-        </Typography>
-        <div className={classes.searchContainer}>
-          <Search />
-        </div>
-   
-          <div className={classes.sectionDesktop}>
-            <Tooltip title='Add a new card'>
-              <Button
-                className={classes.navbarButton}
-                onClick={handleClickOpen}
-                color='inherit'>
-                Add card
-              </Button>
-            </Tooltip>
-            {cardCreationDialog}
-          </div>
-         
- 
-        
-      </Toolbar>
-    </AppBar>
-  </div>
+    <div className={classes.container} >
+      <Typography variant='h6'>
+        To-Do list
+      </Typography>
+      <Search />
+      <Tooltip title='Add a new card'>
+        <Button
+          className={classes.button}
+          onClick={handleModal}
+          color='inherit'>
+            Add card
+        </Button>
+      </Tooltip>
+      {cardCreationDialog}
+    </div>
   )
 }
 
 Navbar.propTypes = {
+  createCard: PropTypes.func.isRequired
 }
 
 const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
+  createCard: (title) => dispatch(createCard(title)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Navbar)

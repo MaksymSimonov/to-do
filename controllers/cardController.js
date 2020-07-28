@@ -11,6 +11,7 @@ createCard = (req, res) => {
   }
 
   const card = new Card(body)
+  card.date = new Date().getTime()
 
   if (!card) {
     return res.status(400).json({ success: false, error: err })
@@ -21,8 +22,7 @@ createCard = (req, res) => {
       .then(() => {
         return res.status(201).json({
           success: true,
-          id: card._id,
-          message: 'Card saved!',
+          data: card,
         })
       })
       .catch(error => {
@@ -86,6 +86,113 @@ deleteCard = async (req, res) => {
   }).catch(err => console.log(err))
 }
 
+addTask = async (req, res) => { 
+  const body = req.body
+
+  if (!body) {
+    return res.status(400).json({
+      success: false,
+      error: 'You must provide a body to add task',
+    })
+  }
+
+  Card.findOne({ _id: req.params.cardId }, (err, card) => {
+    if (err) {
+      return res.status(404).json({
+        err,
+        message: 'Card not found!',
+      })
+    }
+
+    const task = { 
+      'task': body.task, 
+      'done': false, 
+      'date': new Date().getTime() 
+    }
+
+    const cardTasks = card.tasks
+    cardTasks.push(task)
+    card.tasks = cardTasks
+
+    card
+      .save()
+        .then(() => {
+          return res.status(200).json({
+            success: true,
+            data: card
+          })
+        })
+        .catch(error => {
+          return res.status(404).json({
+            error,
+            message: 'Card not updated!',
+          })
+        })
+  })
+}
+
+deleteTask = async (req, res) => { 
+  Card.findOne({ _id: req.params.cardId }, (err, card) => {
+    if (err) {
+      return res.status(404).json({
+        err,
+        message: 'Card not found!',
+      })
+    }
+
+    card.tasks = card.tasks.filter(task => task._id != req.params.taskId)
+
+    card
+      .save()
+        .then(() => {
+          return res.status(200).json({
+            success: true,
+            data: card
+          })
+        })
+        .catch(error => {
+          return res.status(404).json({
+            error,
+            message: 'Card not updated!',
+          })
+        })
+  })
+}
+
+updateDoneForTask = async (req, res) => { 
+  Card.findOne({ _id: req.params.cardId }, (err, card) => {
+    if (err) {
+      return res.status(404).json({
+        err,
+        message: 'Card not found!',
+      })
+    }
+
+    card.tasks = card.tasks.map(task => {
+      if (task._id == req.params.taskId) {
+        task.done = !task.done
+        return task
+      }
+      return task
+    })
+
+    card
+      .save()
+        .then(() => {
+          return res.status(200).json({
+            success: true,
+            data: card
+          })
+        })
+        .catch(error => {
+          return res.status(404).json({
+            error,
+            message: 'Card not updated!',
+          })
+        })
+  })
+}
+
 getCardById = async (req, res) => {
   await Card.findOne({ _id: req.params.id }, (err, card) => {
     if (err) {
@@ -106,10 +213,6 @@ getCards = async (req, res) => {
       return res.status(400).json({ success: false, error: err })
     }
 
-    if (!cards.length) {
-      return res.status(404).json({ success: false, error: `Cards not found` })
-    }
-
     return res.status(200).json({ success: true, data: cards })
   }).catch(err => console.log(err))
 }
@@ -120,4 +223,7 @@ module.exports = {
   deleteCard,
   getCardById,
   getCards,
+  deleteTask,
+  updateDoneForTask,
+  addTask
 }

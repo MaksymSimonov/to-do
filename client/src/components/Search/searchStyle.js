@@ -2,7 +2,12 @@ import { fade, makeStyles } from '@material-ui/core/styles'
 import styleConstants from '../../utils/constants/styleConstants'
 
 const useStyles = makeStyles(theme => ({
- 
+  searchContainer: {
+    width: 300,
+    [theme.breakpoints.down('xs')]: {
+      display: 'none'
+    }
+  },
   optionWrapper: {
     display: 'flex',
     justifyContent: 'space-between',
@@ -30,9 +35,10 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     [theme.breakpoints.up('sm')]: {
       marginLeft: theme.spacing(3),
-      width: 'auto'
+      width: 'auto',
     }
   },
+
   searchIcon: {
     width: theme.spacing(7),
     height: '100%',

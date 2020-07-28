@@ -41,6 +41,7 @@ const Search = ({  }) => {
   }
 
   return (
+    <div  className={classes.searchContainer}>
     <Autocomplete
       className={classes.searchInput}
       size='small'
@@ -84,6 +85,7 @@ const Search = ({  }) => {
         </div>
       )}
     />
+    </div>
   )
 }
 
